@@ -12,11 +12,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import Cookies from "js-cookie";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Link as NavLink, Outlet, useNavigate } from "react-router-dom";
 
-const pages = ["DASHBOARD", "RECORD"];
+const pages = ["Dashboard", "Record"];
 const link = ["/dashboard", "/record"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Logout"];
 
 function NavBar() {
   const navigate = useNavigate();
@@ -31,8 +34,12 @@ function NavBar() {
   };
 
   const handleGoToLink = (link) => {
-    // setAnchorElNav(null);
     navigate(link);
+  };
+
+  const handleLogout = () => {
+    Cookies.set("token", "", { expires: new Date(0) });
+    navigate("/login");
   };
 
   const handleCloseUserMenu = () => {
@@ -40,20 +47,20 @@ function NavBar() {
   };
 
   return (
-    <div className="border-2 border-red-600">
-      <AppBar position="static">
-        <Container maxWidth="xl">
+    <div className="h-screen flex flex-col">
+      <div className="navbar-container bg-[#182c34] py-2 flex justify-center items-center">
+        <div className="w-[95%] font-['Poppins'] text-white ">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
+              href="/dashboard"
               sx={{
-                mr: 2,
+                // mr: 2,
                 display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
+                fontFamily: "Poppins",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
@@ -62,46 +69,48 @@ function NavBar() {
             >
               BACKOFFICE
             </Typography>
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              LOGO
-            </Typography>
             <Box
               sx={{
                 flexGrow: 1,
                 display: { xs: "none", md: "flex" },
                 // border: "2px solid black",
+                gap: "20px",
+                margin: "0 50px",
               }}
             >
               {pages.map((page, index) => (
-                <Button
-                  key={index}
-                  onClick={() => handleGoToLink(link[index])}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
+                <NavLink key={index} to={link[index]} className="text-xl">
+                  {index === 0 ? (
+                    <div
+                      className={`${
+                        window.location.pathname.startsWith("/dashboard")
+                          ? "bg-gray-700"
+                          : ""
+                      } px-2 py-1 rounded-md transition ease-in-out`}
+                    >
+                      <p>{page}</p>
+                    </div>
+                  ) : index === 1 ? (
+                    <div
+                      className={`${
+                        window.location.pathname.startsWith("/record")
+                          ? "bg-gray-700"
+                          : ""
+                      } px-2 py-1 rounded-md transition ease-in-out`}
+                    >
+                      <p>{page}</p>
+                    </div>
+                  ) : null}
+                </NavLink>
               ))}
             </Box>
-
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                  <AccountCircleIcon
+                    style={{ fontSize: "2rem", color: "white" }}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -122,15 +131,25 @@ function NavBar() {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Typography
+                      textAlign="center"
+                      onClick={() => handleLogout()}
+                    >
+                      <div className="flex gap-2">
+                        <LogoutIcon />
+                        {setting}
+                      </div>
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
           </Toolbar>
-        </Container>
-      </AppBar>
-      <Outlet />
+        </div>
+      </div>
+      <div className="outlet-container flex-1">
+        <Outlet />
+      </div>
     </div>
   );
 }

@@ -85,10 +85,21 @@ export default function Login() {
             sx={{
               fontFamily: "Poppins, sans-serif",
               fontWeight: "600",
-              fontSize: "3rem",
+              fontSize: "2rem",
             }}
           >
-            Login
+            Backoffice Login
+          </Typography>
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: "300",
+              fontSize: "1rem",
+            }}
+          >
+            Welcome!
           </Typography>
           <Box
             component="form"
@@ -100,6 +111,8 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
+              inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
+              InputLabelProps={{ style: { fontFamily: "Poppins, sans serif" } }}
               id="username"
               label="Username"
               name="username"
@@ -110,6 +123,8 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
+              inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
+              InputLabelProps={{ style: { fontFamily: "Poppins, sans serif" } }}
               name="password"
               label="Password"
               type="password"
@@ -118,7 +133,13 @@ export default function Login() {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label={
+                <Typography
+                  sx={{ fontSize: 16, fontFamily: "Poppins, sans serif" }}
+                >
+                  Remember Me
+                </Typography>
+              }
             />
             <Button
               type="submit"
@@ -130,19 +151,27 @@ export default function Login() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ fontFamily: "Poppins, sans serif" }}
+                >
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ fontFamily: "Poppins, sans serif" }}
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 8, mb: 4, fontFamily: "Poppins, sans serif" }} />
       </Container>
     </ThemeProvider>
   );
