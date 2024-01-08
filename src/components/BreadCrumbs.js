@@ -13,21 +13,13 @@ function handleClick(event) {
 
 export default function BreadCrumbs({ route, pathName }) {
   const breadcrumbs = [
-    <Link
-      underline="hover"
-      key="1"
-      color="inherit"
-      href="/"
-      onClick={handleClick}
-    >
+    <Link underline="hover" key="1" color="inherit" href="/dashboard">
       <HomeOutlinedIcon />
     </Link>,
     <Link
       underline="hover"
       key="2"
       color="inherit"
-      href="/material-ui/getting-started/installation/"
-      onClick={handleClick}
       sx={{ fontFamily: "Poppins", textTransform: "capitalize" }}
     >
       {route}

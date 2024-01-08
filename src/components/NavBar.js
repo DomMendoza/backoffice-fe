@@ -11,13 +11,18 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Cookies from "js-cookie";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import HistoryIcon from "@mui/icons-material/History";
 import { Link as NavLink, Outlet, useNavigate } from "react-router-dom";
 
 const pages = ["Dashboard", "Members", "Reports"];
 const settings = ["Logout"];
 const membersMenu = ["Member Management"];
+const membersIcon = [<ManageAccountsIcon />];
 const membersLink = ["/members/manage"];
 const reportsMenu = ["Gross Gaming Revenue", "Bet History"];
+const reportsIcon = [<AttachMoneyIcon />, <HistoryIcon />];
 const reportsLink = ["/reports/ggr", "/reports/history"];
 
 function NavBar() {
@@ -145,7 +150,8 @@ function NavBar() {
                               className="text-xl"
                             >
                               <div className="flex gap-2 font-['Poppins'] ">
-                                <LogoutIcon />
+                                {/* <LogoutIcon /> */}
+                                {membersIcon[index]}
                                 <div className="text-base flex flex-col justify-start items-start font-semibold">
                                   {item}
                                   <p className="text-xs text-gray-500 font-light">
@@ -202,7 +208,8 @@ function NavBar() {
                               className="text-xl"
                             >
                               <div className="flex gap-2 font-['Poppins'] ">
-                                <LogoutIcon />
+                                {/* <LogoutIcon /> */}
+                                {reportsIcon[index]}
                                 <div className="text-base flex flex-col justify-start items-start font-semibold">
                                   {item}
                                   <p className="text-xs text-gray-500 font-light">
