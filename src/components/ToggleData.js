@@ -2,13 +2,13 @@ import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export default function ToggleData({ externalFilterChanged, tab, setTab }) {
+export default function ToggleData({ tab, setTab }) {
   const handleChange = (event, newAlignment) => {
-    externalFilterChanged(newAlignment);
+    // externalFilterChanged(newAlignment);
     setTab(newAlignment);
   };
 
-  const text = ["EBingo", "Egames"];
+  const text = ["E-Bingo", "E-games"];
   const params = ["ebingo", "egames"];
 
   return (

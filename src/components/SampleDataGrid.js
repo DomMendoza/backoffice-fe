@@ -30,9 +30,6 @@ const dateFilterParams = {
   },
 };
 
-// let ageType = "everyone";
-// TODO: Make data appear in the table
-
 const asDate = (dateAsString) => {
   const splitFields = dateAsString.split("/");
   return new Date(
@@ -50,7 +47,7 @@ const ebingoData = [
     payout: "payout1",
     ggr: "ggr1",
     jackpotContribution: "jackpotContribution1",
-    jackpotPayoutL: "jackpotPayout1",
+    jackpotPayout: "jackpotPayout1",
   },
   {
     date: "02/01/2024",
@@ -59,7 +56,7 @@ const ebingoData = [
     payout: "payout2",
     ggr: "ggr2",
     jackpotContribution: "jackpotContribution2",
-    jackpotPayoutL: "jackpotPayout2",
+    jackpotPayout: "jackpotPayout2",
   },
 ];
 
@@ -71,7 +68,7 @@ const egamesData = [
     payout: "payout1",
     ggr: "ggr1",
     jackpotContribution: "jackpotContribution1",
-    jackpotPayoutL: "jackpotPayout1",
+    jackpotPayout: "jackpotPayout1",
   },
   {
     date: "02/01/2024",
@@ -80,7 +77,7 @@ const egamesData = [
     payout: "payout2",
     ggr: "ggr2",
     jackpotContribution: "jackpotContribution2",
-    jackpotPayoutL: "jackpotPayout2",
+    jackpotPayout: "jackpotPayout2",
   },
 ];
 
@@ -91,29 +88,49 @@ export const SampleDataGrid = () => {
   const [rowData, setRowData] = useState();
   const [tab, setTab] = useState("ebingo");
   const [columnDefs] = useState([
-    // { field: "athlete", minWidth: 180 },
-    // { field: "age", filter: "agNumberColumnFilter", maxWidth: 80 },
-    // { field: "country" },
-    // { field: "year", maxWidth: 90 },
-    // {
-    //   field: "date",
-    //   filter: "agDateColumnFilter",
-    //   filterParams: dateFilterParams,
-    // },
-    // { field: "gold", filter: "agNumberColumnFilter" },
-    // { field: "silver", filter: "agNumberColumnFilter" },
-    // { field: "bronze", filter: "agNumberColumnFilter" },
     {
       field: "date",
       filter: "agDateColumnFilter",
       filterParams: dateFilterParams,
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
     },
-    { field: "turnover", filter: "agNumberColumnFilter" },
-    { field: "validBet", filter: "agNumberColumnFilter" },
-    { field: "payout", filter: "agNumberColumnFilter" },
-    { field: "ggr", filter: "agNumberColumnFilter" },
-    { field: "jackpotContribution", filter: "agNumberColumnFilter" },
-    { field: "jackpotPayoutL", filter: "agNumberColumnFilter" },
+    {
+      field: "turnover",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
+    },
+    {
+      field: "validBet",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
+    },
+    {
+      field: "payout",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
+    },
+    {
+      field: "ggr",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style-bold",
+    },
+    {
+      field: "jackpotContribution",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
+    },
+    {
+      field: "jackpotPayout",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
+    },
   ]);
   const defaultColDef = useMemo(
     () => ({
@@ -124,59 +141,26 @@ export const SampleDataGrid = () => {
     []
   );
 
-  const onGridReady = useCallback((params) => {
-    // fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-    //   .then((resp) => resp.json())
-    //   .then((data) => {
-    //     // document.querySelector("#everyone").checked = true;
-    //     setRowData(data);
-    //   });
+  const onBtnExport = useCallback(() => {
+    const params = {
+      fileName: "gross-gaming-revenue.csv",
+    };
+    gridRef.current.api.exportDataAsCsv(params);
+  }, []);
 
+  useEffect(() => {
     if (tab === "ebingo") {
       setRowData(ebingoData);
     } else if (tab === "egames") {
       setRowData(egamesData);
     }
-  }, []);
-
-  const externalFilterChanged = useCallback((newValue) => {
-    setTab(newValue);
-    // ageType = newValue;
-    gridRef.current.api.onFilterChanged();
-  }, []);
-
-  const isExternalFilterPresent = useCallback(() => tab !== "ebingo", []);
-
-  const doesExternalFilterPass = useCallback(
-    (node) => {
-      if (node.data) {
-        switch (tab) {
-          case "ebingo":
-            return setTab("ebingo");
-          case "egames":
-            return setTab("egames");
-          //   case "above50":
-          //     return node.data.age > 50;
-          //   case "dateAfter2008":
-          //     return asDate(node.data.date) > new Date(2008, 1, 1);
-          default:
-            return true;
-        }
-      }
-      return true;
-    },
-    [tab]
-  );
+  }, [tab]);
 
   return (
     <div style={containerStyle}>
       <div className="h-full flex flex-col ">
         <div className="font-['Poppins'] flex justify-between py-4">
-          <ToggleData
-            externalFilterChanged={externalFilterChanged}
-            tab={tab}
-            setTab={setTab}
-          />
+          <ToggleData tab={tab} setTab={setTab} />
           <Button
             variant="contained"
             style={{
@@ -188,24 +172,22 @@ export const SampleDataGrid = () => {
               alignItems: "center",
               color: "white",
               fontFamily: "Poppins",
-              padding: "8px 12px", // You might need to adjust the padding based on your design
-              borderRadius: "4px", // You might need to adjust the border-radius based on your design
+              padding: "8px 12px",
+              borderRadius: "4px",
             }}
+            onClick={onBtnExport}
           >
             <ArticleIcon />
             <p className="text-base">Export</p>
           </Button>
         </div>
 
-        <div style={gridStyle} className="ag-theme-quartz-dark">
+        <div style={gridStyle} className="ag-theme-quartz">
           <AgGridReact
             ref={gridRef}
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
-            isExternalFilterPresent={isExternalFilterPresent}
-            doesExternalFilterPass={doesExternalFilterPass}
-            onGridReady={onGridReady}
           />
         </div>
       </div>

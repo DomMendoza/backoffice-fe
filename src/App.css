@@ -1,1 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+.header-style-bold {
+    font-family: 'Poppins';
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+.header-style {
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 1.1rem;
+}

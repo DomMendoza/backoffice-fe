@@ -1,13 +1,14 @@
-import React from "react";
-import ArticleIcon from "@mui/icons-material/Article";
+import React, { useEffect, useState } from "react";
 import { SampleDataGrid } from "../components/SampleDataGrid";
+import BreadCrumbs from "../components/BreadCrumbs";
 
-function Record() {
+function GrossGamingRevenue() {
   return (
     <div className="main-container h-full flex justify-center">
-      <div className="items-container w-[95%]  flex flex-col justify-center gap-2">
+      <div className="items-container w-[95%] flex flex-col justify-center gap-4 ">
+        <BreadCrumbs route="Report" pathName="Gross Gaming Revenue" />
         <div className="flex justify-between items-center ">
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
             <p className="capitalize text-3xl font-semibold font-['Poppins']">
               Gross Gaming Revenue
             </p>
@@ -15,10 +16,6 @@ function Record() {
               Manage your game reports here.
             </p>
           </div>
-          {/* <div className="bg-[#182c34] flex gap-2 justify-center items-center text-white font-['Poppins'] px-3 py-2 rounded-md">
-            <ArticleIcon />
-            <p className="text-lg">Export</p>
-          </div> */}
         </div>
         <SampleDataGrid />
       </div>
@@ -26,4 +23,4 @@ function Record() {
   );
 }
 
-export default Record;
+export default GrossGamingRevenue;
