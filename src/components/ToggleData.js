@@ -2,14 +2,10 @@ import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export default function ToggleData({ tab, setTab }) {
+export default function ToggleData({ tab, setTab, text, params }) {
   const handleChange = (event, newAlignment) => {
-    // externalFilterChanged(newAlignment);
     setTab(newAlignment);
   };
-
-  const text = ["E-Bingo", "E-games"];
-  const params = ["ebingo", "egames"];
 
   return (
     <ToggleButtonGroup
@@ -21,7 +17,7 @@ export default function ToggleData({ tab, setTab }) {
     >
       {text.map((item, index) => (
         <ToggleButton key={index} value={params[index]} disableRipple>
-          {item}
+          <p className="text-xs">{item}</p>
         </ToggleButton>
       ))}
     </ToggleButtonGroup>

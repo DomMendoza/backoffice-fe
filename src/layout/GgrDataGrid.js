@@ -11,7 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ToggleData from "./ToggleData";
+import ToggleData from "../components/ToggleData";
 import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 
@@ -82,7 +82,7 @@ const egamesData = [
   },
 ];
 
-export const SampleDataGrid = () => {
+export const GgrDataGrid = () => {
   const gridRef = useRef();
   const containerStyle = useMemo(() => ({ width: "100%", height: "80%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
@@ -161,7 +161,7 @@ export const SampleDataGrid = () => {
     <div style={containerStyle}>
       <div className="h-full flex flex-col ">
         <div className="font-['Poppins'] flex justify-between py-4">
-          <ToggleData tab={tab} setTab={setTab} />
+          {/* <ToggleData tab={tab} setTab={setTab} /> */}
           <Button
             variant="contained"
             style={{

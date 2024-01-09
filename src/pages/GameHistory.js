@@ -1,25 +1,26 @@
 import React from "react";
+import { GameHistoryDataGrid } from "../layout/GameHistoryDataGrid";
 import BreadCrumbs from "../components/BreadCrumbs";
 
-function ManageMembers() {
+function GameHistory() {
   return (
     <div className="main-container h-full flex justify-center">
       <div className="items-container w-[95%] flex flex-col justify-center gap-4 ">
-        <BreadCrumbs route="Members" pathName="Member Management" />
+        <BreadCrumbs route="Report" pathName="Game History" />
         <div className="flex justify-between items-center ">
           <div className="flex flex-col ">
             <p className="capitalize text-3xl font-semibold font-['Poppins']">
-              Member Management
+              Game History
             </p>
             <p className="capitalize text-base font-['Poppins'] text-gray-600">
-              Manage your members and their permission here.
+              View game history report.
             </p>
           </div>
         </div>
-        {/* <SampleDataGrid /> */}
+        <GameHistoryDataGrid />
       </div>
     </div>
   );
 }
 
-export default ManageMembers;
+export default GameHistory;

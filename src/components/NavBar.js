@@ -11,25 +11,27 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Cookies from "js-cookie";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HistoryIcon from "@mui/icons-material/History";
+import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Link as NavLink, Outlet, useNavigate } from "react-router-dom";
 
-const pages = ["Dashboard", "Members", "Reports"];
+const pages = ["Reports"];
 const settings = ["Logout"];
-const membersMenu = ["Member Management"];
-const membersIcon = [<ManageAccountsIcon />];
-const membersLink = ["/members/manage"];
-const reportsMenu = ["Gross Gaming Revenue", "Bet History"];
-const reportsIcon = [<AttachMoneyIcon />, <HistoryIcon />];
-const reportsLink = ["/reports/ggr", "/reports/history"];
+const reportsMenu = ["Gross Gaming Revenue", "Bet History", "Game History"];
+const reportsIcon = [
+  <AttachMoneyIcon />,
+  <HistoryIcon />,
+  <CasinoOutlinedIcon />,
+];
+const reportsLink = ["/reports/ggr", "/reports/history", "/reports/game"];
 
 function NavBar() {
   const navigate = useNavigate();
   // const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorSettings, setAnchorSettings] = React.useState(null);
-  const [anchorMembers, setAnchorMembers] = React.useState(null);
   const [anchorReports, setAnchorReports] = React.useState(null);
 
   //Settings
@@ -38,14 +40,6 @@ function NavBar() {
   };
   const handleCloseUserMenu = () => {
     setAnchorSettings(null);
-  };
-
-  //Members
-  const handleOpenMembersMenu = (event) => {
-    setAnchorMembers(event.currentTarget);
-  };
-  const handleCloseMembersMenu = () => {
-    setAnchorMembers(null);
   };
 
   //Reports
@@ -95,7 +89,7 @@ function NavBar() {
             >
               {pages.map((page, index) => (
                 <div key={index} className="text-xl flex">
-                  {index === 0 ? (
+                  {/* index === 0 ? (
                     <NavLink
                       className={`${
                         window.location.pathname.startsWith("/dashboard")
@@ -106,65 +100,8 @@ function NavBar() {
                     >
                       <p>{page}</p>
                     </NavLink>
-                  ) : index === 1 ? (
-                    <Box
-                      sx={{
-                        flexGrow: 0,
-                        cursor: "pointer",
-                        borderRadius: "6px",
-                        backgroundColor: window.location.pathname.startsWith(
-                          "/members"
-                        )
-                          ? "#374151"
-                          : "",
-                      }}
-                    >
-                      <Tooltip onClick={handleOpenMembersMenu}>
-                        <div className="text-xl px-2 py-1 rounded-md transition ease-in-out">
-                          <p>{page}</p>
-                        </div>
-                      </Tooltip>
-                      <Menu
-                        sx={{ mt: "45px" }}
-                        id="menu-appbar"
-                        anchorEl={anchorMembers}
-                        anchorOrigin={{
-                          vertical: "top",
-                          horizontal: "center",
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "center",
-                        }}
-                        open={Boolean(anchorMembers)}
-                        onClose={handleCloseMembersMenu}
-                      >
-                        {membersMenu.map((item, index) => (
-                          <MenuItem
-                            key={index}
-                            onClick={handleCloseMembersMenu}
-                          >
-                            <NavLink
-                              to={membersLink[index]}
-                              className="text-xl"
-                            >
-                              <div className="flex gap-2 font-['Poppins'] ">
-                                {/* <LogoutIcon /> */}
-                                {membersIcon[index]}
-                                <div className="text-base flex flex-col justify-start items-start font-semibold">
-                                  {item}
-                                  <p className="text-xs text-gray-500 font-light">
-                                    Manage members and permission
-                                  </p>
-                                </div>
-                              </div>
-                            </NavLink>
-                          </MenuItem>
-                        ))}
-                      </Menu>
-                    </Box>
-                  ) : index === 2 ? (
+                  ) */}
+                  {index === 0 ? (
                     <Box
                       sx={{
                         flexGrow: 0,
@@ -178,8 +115,17 @@ function NavBar() {
                       }}
                     >
                       <Tooltip onClick={handleOpenReportsMenu}>
-                        <div className="text-xl px-2 py-1 rounded-md transition ease-in-out">
+                        <div className="flex justify-center items-center gap-1 text-xl px-2 py-1 rounded-md transition ease-in-out">
                           <p>{page}</p>
+                          <div
+                            className={`transition-transform duration-300 ease-in-out ${
+                              anchorReports ? "rotate-180" : ""
+                            }`}
+                          >
+                            <KeyboardArrowDownIcon
+                              style={{ fontSize: "1.2rem" }}
+                            />
+                          </div>
                         </div>
                       </Tooltip>
                       <Menu
@@ -207,7 +153,7 @@ function NavBar() {
                               to={reportsLink[index]}
                               className="text-xl"
                             >
-                              <div className="flex gap-2 font-['Poppins'] ">
+                              <div className="flex gap-4 font-['Poppins'] ">
                                 {/* <LogoutIcon /> */}
                                 {reportsIcon[index]}
                                 <div className="text-base flex flex-col justify-start items-start font-semibold">

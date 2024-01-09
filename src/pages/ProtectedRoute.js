@@ -3,9 +3,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import Dashboard from "./Dashboard";
-import ManageMembers from "./ManageMembers";
 import GrossGamingRevenue from "./GrossGamingRevenue";
 import BetHistory from "./BetHistory";
+import GameHistory from "./GameHistory";
 import NavBar from "../components/NavBar";
 
 function ProtectedRoute() {
@@ -13,11 +13,12 @@ function ProtectedRoute() {
   return (
     <Routes>
       <Route path="/" element={token ? <NavBar /> : <Navigate to="/login" />}>
-        <Route index element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="/members/manage" element={<ManageMembers />} />
+        {/* <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} /> */}
+        <Route index element={<GrossGamingRevenue />} />
         <Route path="/reports/ggr" element={<GrossGamingRevenue />} />
         <Route path="/reports/history" element={<BetHistory />} />
+        <Route path="/reports/game" element={<GameHistory />} />
       </Route>
     </Routes>
   );

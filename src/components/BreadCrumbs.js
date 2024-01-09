@@ -20,21 +20,28 @@ export default function BreadCrumbs({ route, pathName }) {
       underline="hover"
       key="2"
       color="inherit"
-      sx={{ fontFamily: "Poppins", textTransform: "capitalize" }}
-    >
-      {route}
-    </Link>,
-    <Typography
-      key="3"
-      color="text.primary"
       sx={{
         fontFamily: "Poppins",
         textTransform: "capitalize",
-        fontWeight: "600",
+        fontWeight: route === "Dashboard" ? "600" : "",
+        color: route === "Dashboard" ? "black" : "",
       }}
     >
-      {pathName}
-    </Typography>,
+      {route}
+    </Link>,
+    route === "Dashboard" ? null : (
+      <Typography
+        key="3"
+        color="text.primary"
+        sx={{
+          fontFamily: "Poppins",
+          textTransform: "capitalize",
+          fontWeight: "600",
+        }}
+      >
+        {pathName}
+      </Typography>
+    ),
   ];
 
   return (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SampleDataGrid } from "../components/SampleDataGrid";
+import { GgrDataGrid } from "../layout/GgrDataGrid";
 import BreadCrumbs from "../components/BreadCrumbs";
 
 function GrossGamingRevenue() {
@@ -17,7 +18,7 @@ function GrossGamingRevenue() {
             </p>
           </div>
         </div>
-        <SampleDataGrid />
+        <GgrDataGrid />
       </div>
     </div>
   );
