@@ -13,7 +13,7 @@ function BetHistory() {
 
   const onBtnExport = useCallback(() => {
     const params = {
-      fileName: "gross-gaming-revenue.csv",
+      fileName: "bet-history.csv",
     };
     gridRef.current.api.exportDataAsCsv(params);
   }, []);

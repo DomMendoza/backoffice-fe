@@ -13,7 +13,11 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ToggleData from "../components/ToggleData";
 import ArticleIcon from "@mui/icons-material/Article";
+import ClearIcon from "@mui/icons-material/Clear";
 import Button from "@mui/material/Button";
+import { getGGR } from "../services/getGGR";
+import DatePickers from "../components/DatePickers";
+import dayjs from "dayjs";
 
 const dateFilterParams = {
   comparator: (filterLocalDateAtMidnight, cellValue) => {
@@ -40,54 +44,13 @@ const asDate = (dateAsString) => {
   );
 };
 
-const ebingoData = [
-  {
-    date: "01/01/2024",
-    turnover: "ebingo1",
-    validBet: "validBet1",
-    payout: "payout1",
-    ggr: "ggr1",
-    jackpotContribution: "jackpotContribution1",
-    jackpotPayout: "jackpotPayout1",
-  },
-  {
-    date: "02/01/2024",
-    turnover: "ebingo2",
-    validBet: "validBet2",
-    payout: "payout2",
-    ggr: "ggr2",
-    jackpotContribution: "jackpotContribution2",
-    jackpotPayout: "jackpotPayout2",
-  },
-];
-
-const egamesData = [
-  {
-    date: "01/01/2024",
-    turnover: "egames1",
-    validBet: "validBet1",
-    payout: "payout1",
-    ggr: "ggr1",
-    jackpotContribution: "jackpotContribution1",
-    jackpotPayout: "jackpotPayout1",
-  },
-  {
-    date: "02/01/2024",
-    turnover: "egames2",
-    validBet: "validBet2",
-    payout: "payout2",
-    ggr: "ggr2",
-    jackpotContribution: "jackpotContribution2",
-    jackpotPayout: "jackpotPayout2",
-  },
-];
-
-export const GgrDataGrid = () => {
-  const gridRef = useRef();
+export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
+  const [start, setStart] = React.useState();
+  const [end, setEnd] = React.useState(dayjs());
   const containerStyle = useMemo(() => ({ width: "100%", height: "80%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const [rowData, setRowData] = useState();
-  const [tab, setTab] = useState("ebingo");
+  // const [tab, setTab] = useState("ebingo");
   const [columnDefs] = useState([
     {
       field: "date",
@@ -97,13 +60,15 @@ export const GgrDataGrid = () => {
       headerClass: "header-style",
     },
     {
-      field: "turnover",
+      field: "amount",
+      headerName: "Amount",
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
     },
     {
-      field: "validBet",
+      field: "amount",
+      headerName: "Valid Bet",
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
@@ -121,13 +86,15 @@ export const GgrDataGrid = () => {
       headerClass: "header-style-bold",
     },
     {
-      field: "jackpotContribution",
+      field: "jackpot_contribution",
+      headerName: "Jackpot Contribution",
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
     },
     {
-      field: "jackpotPayout",
+      field: "payout",
+      headerName: "Jackpot Payout",
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
@@ -142,47 +109,41 @@ export const GgrDataGrid = () => {
     []
   );
 
-  const onBtnExport = useCallback(() => {
-    const params = {
-      fileName: "gross-gaming-revenue.csv",
-    };
-    gridRef.current.api.exportDataAsCsv(params);
-  }, []);
+  const handleClearFilter = () => {
+    setStart();
+    setEnd(dayjs());
+  };
+
+  const fetchData = async () => {
+    const result = await getGGR(start, end);
+    setRowData(result);
+    setDataCount(result.length);
+    console.log(result);
+  };
 
   useEffect(() => {
-    if (tab === "ebingo") {
-      setRowData(ebingoData);
-    } else if (tab === "egames") {
-      setRowData(egamesData);
-    }
-  }, [tab]);
+    fetchData();
+  }, [isRefresh, start, end]);
 
   return (
     <div style={containerStyle}>
-      <div className="h-full flex flex-col ">
-        <div className="font-['Poppins'] flex justify-between py-4">
+      <div className="h-full flex flex-col gap-3">
+        <div className="font-['Poppins'] flex justify-between">
           {/* <ToggleData tab={tab} setTab={setTab} /> */}
-          <Button
-            variant="contained"
-            style={{
-              backgroundColor: "#182c34",
-              cursor: "pointer",
-              display: "flex",
-              gap: "5px",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "white",
-              fontFamily: "Poppins",
-              padding: "8px 12px",
-              borderRadius: "4px",
-            }}
-            onClick={onBtnExport}
-          >
-            <ArticleIcon />
-            <p className="text-base">Export</p>
-          </Button>
         </div>
-
+        <div className="flex gap-4 items-center">
+          <DatePickers
+            start={start}
+            setStart={setStart}
+            end={end}
+            setEnd={setEnd}
+          />
+          {start && (
+            <div className="cursor-pointer" onClick={() => handleClearFilter()}>
+              <ClearIcon style={{ color: "red" }} />
+            </div>
+          )}
+        </div>
         <div style={gridStyle} className="ag-theme-quartz">
           <AgGridReact
             ref={gridRef}
