@@ -11,7 +11,10 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import ToggleData from "../components/ToggleData";
+import ClearIcon from "@mui/icons-material/Clear";
 import { getBetHistory } from "../services/getBetHistory";
+import DatePickers from "../components/DatePickers";
+import dayjs from "dayjs";
 
 const dateFilterParams = {
   comparator: (filterLocalDateAtMidnight, cellValue) => {
@@ -39,6 +42,8 @@ const asDate = (dateAsString) => {
 };
 
 export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
+  const [start, setStart] = React.useState();
+  const [end, setEnd] = React.useState(dayjs());
   const containerStyle = useMemo(() => ({ width: "100%", height: "80%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const gameType = [
@@ -54,10 +59,8 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     "PIRATE BABES WEB",
     "SEA RICHES WEB",
   ];
-  const timeType = ["today", "yesterday", "last week"];
   const [rowData, setRowData] = useState();
   const [tab, setTab] = useState("ALL");
-  const [timeTab, setTimeTab] = useState("today");
   const [columnDefs] = useState([
     {
       field: "id",
@@ -163,6 +166,11 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     []
   );
 
+  const handleClearFilter = () => {
+    setStart();
+    setEnd(dayjs());
+  };
+
   const showLoadingOverlay = () => {
     if (gridRef.current && gridRef.current.api) {
       gridRef.current.api.showLoadingOverlay();
@@ -179,7 +187,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     try {
       showLoadingOverlay();
 
-      const result = await getBetHistory(timeTab);
+      const result = await getBetHistory(start, end);
       //rowData converts the winning amount from string to int to avoid error.
       const rowData = result.Betting_Logs.map((item) => ({
         ...item,
@@ -203,7 +211,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
 
   useEffect(() => {
     fetchData(tab);
-  }, [tab, isRefresh, timeTab]);
+  }, [tab, isRefresh, start, end]);
 
   // useEffect(() => {
   //   console.log(rowData);
@@ -212,6 +220,19 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
   return (
     <div style={containerStyle}>
       <div className="h-full flex flex-col gap-2">
+        <div className="flex gap-4 items-center">
+          <DatePickers
+            start={start}
+            setStart={setStart}
+            end={end}
+            setEnd={setEnd}
+          />
+          {start && (
+            <div className="cursor-pointer" onClick={() => handleClearFilter()}>
+              <ClearIcon style={{ color: "red" }} />
+            </div>
+          )}
+        </div>
         <div className="font-['Poppins'] flex justify-between">
           <ToggleData
             tab={tab}
@@ -219,21 +240,13 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             text={gameType}
             params={gameType}
           />
-
-          <ToggleData
+          {/* <ToggleData
             tab={timeTab}
             setTab={setTimeTab}
             text={timeType}
             params={timeType}
-          />
+          /> */}
         </div>
-        {/* <ToggleData
-          tab={timeTab}
-          setTab={setTimeTab}
-          text={timeType}
-          params={timeType}
-        /> */}
-
         <div style={gridStyle} className="ag-theme-quartz">
           <AgGridReact
             ref={gridRef}

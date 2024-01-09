@@ -17,7 +17,7 @@ export default function ToggleData({ tab, setTab, text, params }) {
     >
       {text.map((item, index) => (
         <ToggleButton key={index} value={params[index]} disableRipple>
-          <p className="text-xs">{item}</p>
+          <p className="text-[.65rem]">{item}</p>
         </ToggleButton>
       ))}
     </ToggleButtonGroup>

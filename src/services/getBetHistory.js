@@ -2,11 +2,12 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:7777";
 
-export const getBetHistory = async (dateFilter) => {
+export const getBetHistory = async (dateFilter, dateEnd) => {
   try {
     const response = await axios.get(`${baseUrl}/api/betting/logs`, {
       params: {
         dateFilter: dateFilter,
+        dateEnd: dateEnd,
       },
     });
 
