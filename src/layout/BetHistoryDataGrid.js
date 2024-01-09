@@ -192,9 +192,9 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     fetchData(tab);
   }, [tab, isRefresh, timeTab]);
 
-  useEffect(() => {
-    console.log(rowData);
-  }, [rowData]);
+  // useEffect(() => {
+  //   console.log(rowData);
+  // }, [rowData]);
 
   return (
     <div style={containerStyle}>
