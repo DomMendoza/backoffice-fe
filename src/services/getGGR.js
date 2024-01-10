@@ -1,13 +1,16 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:7777";
+const baseUrl = "https://47.128.145.150";
 
 export const getGGR = async (dateFilter, dateEnd) => {
+  const start = dateFilter ? dateFilter.$d.toLocaleDateString() : null;
+  const end = dateEnd.$d.toLocaleDateString();
+
   try {
     const response = await axios.get(`${baseUrl}/api/ggr/dashboard`, {
       params: {
-        dateFilter: dateFilter,
-        dateEnd: dateEnd,
+        dateFilter: start,
+        dateEnd: end,
       },
     });
 

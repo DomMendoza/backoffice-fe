@@ -82,7 +82,17 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     {
       field: "ggr",
       filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
+      cellStyle: (params) => {
+        const ggrValue = params.value;
+
+        if (ggrValue < 0) {
+          return { fontFamily: "Poppins", color: "red" };
+        } else if (ggrValue === 0) {
+          return { fontFamily: "Poppins" };
+        } else {
+          return { fontFamily: "Poppins", color: "green" };
+        }
+      },
       headerClass: "header-style-bold",
     },
     {
@@ -93,7 +103,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       headerClass: "header-style",
     },
     {
-      field: "payout",
+      field: "jackpotPayout",
       headerName: "Jackpot Payout",
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
@@ -114,11 +124,28 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     setEnd(dayjs());
   };
 
+  const roundTwoDecimalPlaces = (data) => {
+    const roundedArray = data.map((obj) => {
+      const newObj = {};
+      for (const key in obj) {
+        if (typeof obj[key] === "number") {
+          newObj[key] = Math.round((obj[key] + Number.EPSILON) * 100) / 100;
+        } else {
+          newObj[key] = obj[key];
+        }
+      }
+      return newObj;
+    });
+
+    return roundedArray;
+  };
+
   const fetchData = async () => {
-    const result = await getGGR(start, end);
-    setRowData(result);
+    const result = await getGGR(start, end); //real and raw data to be used in computations.
+    console.log("Raw GGR: ", result);
+    const ggrData = roundTwoDecimalPlaces(result); //formatted version of 'result' to be displayed in front-end.
+    setRowData(ggrData);
     setDataCount(result.length);
-    console.log(result);
   };
 
   useEffect(() => {

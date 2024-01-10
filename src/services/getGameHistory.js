@@ -2,9 +2,9 @@ import axios from "axios";
 
 const baseUrl = "https://47.128.145.150";
 
-export const getBetHistory = async (dateFilter, dateEnd) => {
+export const getGameHistory = async (dateFilter, dateEnd) => {
   try {
-    const response = await axios.get(`${baseUrl}/api/betting/logs`, {
+    const response = await axios.get(`${baseUrl}/api/gameplay/history`, {
       params: {
         dateFilter: dateFilter,
         dateEnd: dateEnd,

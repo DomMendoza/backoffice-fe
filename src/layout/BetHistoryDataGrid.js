@@ -54,7 +54,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     "BINGO SWERTRES WEB",
     "DRAGON VS TIGER BINGO WEB",
     "FORTUNE 30 WEB",
-    "GOLDEN FARM WEB",
+    "GOLD FARM WEB",
     "GOLDEN ERA WEB",
     "PIRATE BABES WEB",
     "SEA RICHES WEB",
@@ -194,6 +194,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
         winning_amount: parseFloat(item.winning_amount),
         jackpot_payout: parseFloat(item.jackpot_payout),
       }));
+      console.log("Raw Bet History: ", result.Betting_Logs);
 
       if (tab === "ALL") {
         setRowData(rowData);
@@ -240,12 +241,6 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             text={gameType}
             params={gameType}
           />
-          {/* <ToggleData
-            tab={timeTab}
-            setTab={setTimeTab}
-            text={timeType}
-            params={timeType}
-          /> */}
         </div>
         <div style={gridStyle} className="ag-theme-quartz">
           <AgGridReact
