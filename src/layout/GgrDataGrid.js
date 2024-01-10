@@ -10,11 +10,7 @@ import { createRoot } from "react-dom/client";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ToggleData from "../components/ToggleData";
-import ArticleIcon from "@mui/icons-material/Article";
 import ClearIcon from "@mui/icons-material/Clear";
-import Button from "@mui/material/Button";
 import { getGGR } from "../services/getGGR";
 import DatePickers from "../components/DatePickers";
 import dayjs from "dayjs";
@@ -50,46 +46,87 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
   const containerStyle = useMemo(() => ({ width: "100%", height: "80%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const [rowData, setRowData] = useState();
-  // const [tab, setTab] = useState("ebingo");
+  const [totalData, setTotalData] = useState({});
   const [columnDefs] = useState([
     {
       field: "date",
       filter: "agDateColumnFilter",
       filterParams: dateFilterParams,
-      cellStyle: { fontFamily: "Poppins" },
+      cellStyle: (params) => {
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
+        } else {
+          return null;
+        }
+      },
       headerClass: "header-style",
+      cellRenderer: (params) => {
+        const cellValue = params.value;
+        if (params.node.rowPinned) {
+          return `Total:`;
+        } else {
+          return cellValue;
+        }
+      },
     },
     {
       field: "amount",
       headerName: "Amount",
-      filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
+      filter: "agTextColumnFilter",
+      cellStyle: (params) => {
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
+        } else {
+          return null;
+        }
+      },
       headerClass: "header-style",
     },
     {
       field: "amount",
       headerName: "Valid Bet",
-      filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
+      filter: "agTextColumnFilter",
+      cellStyle: (params) => {
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
+        } else {
+          return null;
+        }
+      },
       headerClass: "header-style",
     },
     {
       field: "payout",
-      filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
+      filter: "agTextColumnFilter",
+      cellStyle: (params) => {
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
+        } else {
+          return null;
+        }
+      },
       headerClass: "header-style",
     },
     {
       field: "ggr",
-      filter: "agNumberColumnFilter",
+      filter: "agTextColumnFilter",
       cellStyle: (params) => {
         const ggrValue = params.value;
 
         if (ggrValue < 0) {
+          if (params.node.rowPinned) {
+            return { fontFamily: "Poppins", fontWeight: "600" };
+          }
           return { fontFamily: "Poppins", color: "red" };
         } else if (ggrValue === 0) {
+          if (params.node.rowPinned) {
+            return { fontFamily: "Poppins", fontWeight: "600" };
+          }
           return { fontFamily: "Poppins" };
         } else {
+          if (params.node.rowPinned) {
+            return { fontFamily: "Poppins", fontWeight: "600" };
+          }
           return { fontFamily: "Poppins", color: "green" };
         }
       },
@@ -98,15 +135,27 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     {
       field: "jackpot_contribution",
       headerName: "Jackpot Contribution",
-      filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
+      filter: "agTextColumnFilter",
+      cellStyle: (params) => {
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
+        } else {
+          return null;
+        }
+      },
       headerClass: "header-style",
     },
     {
       field: "jackpotPayout",
       headerName: "Jackpot Payout",
-      filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
+      filter: "agTextColumnFilter",
+      cellStyle: (params) => {
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
+        } else {
+          return null;
+        }
+      },
       headerClass: "header-style",
     },
   ]);
@@ -144,6 +193,37 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     const result = await getGGR(start, end); //real and raw data to be used in computations.
     console.log("Raw GGR: ", result);
     const ggrData = roundTwoDecimalPlaces(result); //formatted version of 'result' to be displayed in front-end.
+
+    // Calculate the sum
+    const totalAmount = ggrData.reduce((sum, item) => sum + item.amount, 0);
+    const totalPayout = ggrData.reduce((sum, item) => sum + item.payout, 0);
+    const totalGgr = ggrData.reduce((sum, item) => sum + item.ggr, 0);
+    const totalJc = ggrData.reduce(
+      (sum, item) => sum + item.jackpot_contribution,
+      0
+    );
+    const totalJp = ggrData.reduce((sum, item) => sum + item.jackpotPayout, 0);
+
+    setTotalData({
+      amount: parseFloat(totalAmount.toFixed(2)),
+      payout: parseFloat(totalPayout.toFixed(2)),
+      ggr: parseFloat(totalGgr.toFixed(2)),
+      jackpot_contribution: parseFloat(totalJc.toFixed(2)),
+      jackpotPayout: parseFloat(totalJp.toFixed(2)),
+    });
+
+    // const ggrDataWithTotal = [
+    //   ...ggrData,
+    //   //bottom row for total
+    //   {
+    //     amount: parseFloat(totalAmount.toFixed(2)),
+    //     payout: parseFloat(totalPayout.toFixed(2)),
+    //     ggr: parseFloat(totalGgr.toFixed(2)),
+    //     jackpot_contribution: parseFloat(totalJc.toFixed(2)),
+    //     jackpotPayout: parseFloat(totalJp.toFixed(2)),
+    //   },
+    // ];
+
     setRowData(ggrData);
     setDataCount(result.length);
   };
@@ -155,9 +235,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
   return (
     <div style={containerStyle}>
       <div className="h-full flex flex-col gap-3">
-        <div className="font-['Poppins'] flex justify-between">
-          {/* <ToggleData tab={tab} setTab={setTab} /> */}
-        </div>
+        <div className="font-['Poppins'] flex justify-between"></div>
         <div className="flex gap-4 items-center">
           <DatePickers
             start={start}
@@ -177,6 +255,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
+            pinnedBottomRowData={[totalData]}
           />
         </div>
       </div>
