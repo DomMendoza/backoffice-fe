@@ -13,7 +13,7 @@ function handleClick(event) {
 
 export default function BreadCrumbs({ route, pathName }) {
   const breadcrumbs = [
-    <Link underline="hover" key="1" color="inherit" href="/dashboard">
+    <Link underline="hover" key="1" color="inherit" href="/">
       <HomeOutlinedIcon />
     </Link>,
     <Link
