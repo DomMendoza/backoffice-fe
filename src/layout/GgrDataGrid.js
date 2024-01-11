@@ -91,11 +91,14 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "amount",
       headerName: "Valid Bet",
-      filter: "agTextColumnFilter",
+      filter: "agNumberColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
           return {
@@ -109,6 +112,9 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "payout",
@@ -126,6 +132,9 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "netWin",
@@ -143,9 +152,12 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
-      field: "jackpot_contribution",
+      field: "jackpotContributionClassic",
       headerName: "Jackpot Contribution",
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
@@ -161,22 +173,56 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
-      field: "jackpotPayout",
       headerName: "Jackpot Payout",
-      filter: "agTextColumnFilter",
-      cellStyle: (params) => {
-        if (params.node.rowPinned) {
-          return {
-            fontWeight: "600",
-            backgroundColor: "gainsboro",
-            textAlign: "center",
-          };
-        } else {
-          return null;
-        }
-      },
+      children: [
+        {
+          field: "jackpotPayoutClassic",
+          headerName: "Classic",
+          filter: "agNumberColumnFilter",
+          cellStyle: (params) => {
+            if (params.node.rowPinned) {
+              return {
+                fontWeight: "600",
+                backgroundColor: "gainsboro",
+                textAlign: "center",
+              };
+            } else {
+              return null;
+            }
+          },
+          headerClass: "header-style",
+          cellClass: "cell-style",
+          valueFormatter: (params) => {
+            return "₱" + formatNumber(params.value);
+          },
+        },
+        {
+          field: "jackpotPayoutVariant",
+          headerName: "Variant",
+          filter: "agNumberColumnFilter",
+          cellStyle: (params) => {
+            if (params.node.rowPinned) {
+              return {
+                fontWeight: "600",
+                backgroundColor: "gainsboro",
+                textAlign: "center",
+              };
+            } else {
+              return null;
+            }
+          },
+          headerClass: "header-style",
+          cellClass: "cell-style",
+          valueFormatter: (params) => {
+            return "₱" + formatNumber(params.value);
+          },
+        },
+      ],
       headerClass: "header-style",
       cellClass: "cell-style",
     },
@@ -220,6 +266,9 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style-bold",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
   ]);
   const defaultColDef = useMemo(
@@ -236,20 +285,10 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     setEnd(dayjs());
   };
 
-  const roundTwoDecimalPlaces = (data) => {
-    const roundedArray = data.map((obj) => {
-      const newObj = {};
-      for (const key in obj) {
-        if (typeof obj[key] === "number") {
-          newObj[key] = Math.round((obj[key] + Number.EPSILON) * 100) / 100;
-        } else {
-          newObj[key] = obj[key];
-        }
-      }
-      return newObj;
-    });
-
-    return roundedArray;
+  const formatNumber = (number) => {
+    return (Math.round((number + Number.EPSILON) * 100) / 100)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
 
   const fetchData = async () => {
@@ -259,38 +298,39 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     // Modify GGR computation based on requirement and add netWin computation.
     const rowData = result.map((item) => ({
       ...item,
-      ggr: parseFloat(
-        item.amount -
-          item.jackpot_contribution -
-          (item.payout - item.jackpotPayout)
-      ),
       netWin: parseFloat(item.amount - item.payout),
     }));
 
-    const ggrData = roundTwoDecimalPlaces(rowData); //formatted version of the data to be displayed in front-end.
-
     // Calculate the sum
-    const totalAmount = ggrData.reduce((sum, item) => sum + item.amount, 0);
-    const totalPayout = ggrData.reduce((sum, item) => sum + item.payout, 0);
-    const totalGgr = ggrData.reduce((sum, item) => sum + item.ggr, 0);
-    const totalJc = ggrData.reduce(
-      (sum, item) => sum + item.jackpot_contribution,
+    const totalAmount = rowData.reduce((sum, item) => sum + item.amount, 0);
+    const totalPayout = rowData.reduce((sum, item) => sum + item.payout, 0);
+    const totalGgr = rowData.reduce((sum, item) => sum + item.ggr, 0);
+    const totalJc = rowData.reduce(
+      (sum, item) => sum + item.jackpotContributionClassic,
       0
     );
-    const totalJp = ggrData.reduce((sum, item) => sum + item.jackpotPayout, 0);
-    const totalNetWin = ggrData.reduce((sum, item) => sum + item.netWin, 0);
+    const totalJpClassic = rowData.reduce(
+      (sum, item) => sum + item.jackpotPayoutClassic,
+      0
+    );
+    const totalJpVariant = rowData.reduce(
+      (sum, item) => sum + item.jackpotPayoutVariant,
+      0
+    );
+    const totalNetWin = rowData.reduce((sum, item) => sum + item.netWin, 0);
 
     //This is the pinned bottom row for totals
     setTotalData({
       amount: parseFloat(totalAmount.toFixed(2)),
       payout: parseFloat(totalPayout.toFixed(2)),
       ggr: parseFloat(totalGgr.toFixed(2)),
-      jackpot_contribution: parseFloat(totalJc.toFixed(2)),
-      jackpotPayout: parseFloat(totalJp.toFixed(2)),
+      jackpotContributionClassic: parseFloat(totalJc.toFixed(2)),
+      jackpotPayoutClassic: parseFloat(totalJpClassic.toFixed(2)),
+      jackpotPayoutVariant: parseFloat(totalJpVariant.toFixed(2)),
       netWin: parseFloat(totalNetWin.toFixed(2)),
     });
 
-    setRowData(ggrData);
+    setRowData(rowData);
     setDataCount(result.length);
   };
 
@@ -322,6 +362,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
             pinnedBottomRowData={[totalData]}
+            pagination={true}
           />
         </div>
       </div>

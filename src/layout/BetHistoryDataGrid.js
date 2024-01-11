@@ -126,6 +126,9 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "created_date",
@@ -152,14 +155,9 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
-    },
-    {
-      field: "winning_amount",
-      headerName: "Winning Amount",
-      filter: "agNumberColumnFilter",
-      cellStyle: { fontFamily: "Poppins" },
-      headerClass: "header-style",
-      cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "jackpot_payout",
@@ -168,6 +166,20 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
+    },
+    {
+      field: "winning_amount",
+      headerName: "Winning Amount",
+      filter: "agNumberColumnFilter",
+      cellStyle: { fontFamily: "Poppins" },
+      headerClass: "header-style",
+      cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
   ]);
   const defaultColDef = useMemo(
@@ -196,6 +208,12 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     }
   };
 
+  const formatNumber = (number) => {
+    return (Math.round((number + Number.EPSILON) * 100) / 100)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
   const fetchData = async (tab) => {
     try {
       showLoadingOverlay();
@@ -204,8 +222,10 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       //rowData converts the winning amount from string to int to avoid error.
       const rowData = result.Betting_Logs.map((item) => ({
         ...item,
+        amount: parseFloat(item.amount),
         winning_amount: parseFloat(item.winning_amount),
         jackpot_payout: parseFloat(item.jackpot_payout),
+        jackpot_contribution: parseFloat(item.jackpot_contribution),
       }));
       console.log("Raw Bet History: ", result.Betting_Logs);
 
@@ -261,6 +281,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
+            pagination={true}
           />
         </div>
       </div>

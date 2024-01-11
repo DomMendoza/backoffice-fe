@@ -94,6 +94,9 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "win",
@@ -112,6 +115,9 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "credit_after",
@@ -120,6 +126,9 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "cards",
@@ -136,6 +145,9 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "winning_cards_identification",
@@ -161,40 +173,55 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "side_bet",
       headerName: "Side Bet",
-      filter: "agTextColumnFilter",
+      filter: "agNumberColumnFilter",
       filterParams: dateFilterParams,
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
 
     {
       field: "win_spent",
       headerName: "Win Spent",
-      filter: "agTextColumnFilter",
+      filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "first_bonus_feature_win",
       headerName: "First Bonus Feature Win",
-      filter: "agTextColumnFilter",
+      filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "second_bonus_feature_win",
       headerName: "Second Bonus Feature Win",
-      filter: "agTextColumnFilter",
+      filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "jackpot_win",
@@ -203,6 +230,9 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
       cellClass: "cell-style",
+      valueFormatter: (params) => {
+        return "₱" + formatNumber(params.value);
+      },
     },
     {
       field: "game_start",
@@ -255,6 +285,12 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     }
   };
 
+  const formatNumber = (number) => {
+    return (Math.round((number + Number.EPSILON) * 100) / 100)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
   const fetchData = async (tab) => {
     try {
       showLoadingOverlay();
@@ -275,6 +311,13 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             ...item,
             credit_before: parseInt(item.credit_before),
             win: parseInt(item.win),
+            bet: parseInt(item.bet),
+            jackpot_win: parseInt(item.jackpot_win),
+            extraball_cost: parseInt(item.extraball_cost),
+            side_bet: parseInt(item.side_bet),
+            win_spent: parseInt(item.win_spent),
+            first_bonus_feature_win: parseInt(item.first_bonus_feature_win),
+            second_bonus_feature_win: parseInt(item.second_bonus_feature_win),
             jackpot_win: parseInt(item.jackpot_win),
             credit_after:
               parseInt(item.credit_before) -
@@ -286,6 +329,13 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             ...item,
             credit_before: parseInt(item.credit_before),
             win: parseInt(item.win),
+            bet: parseInt(item.bet),
+            jackpot_win: parseInt(item.jackpot_win),
+            extraball_cost: parseInt(item.extraball_cost),
+            side_bet: parseInt(item.side_bet),
+            win_spent: parseInt(item.win_spent),
+            first_bonus_feature_win: parseInt(item.first_bonus_feature_win),
+            second_bonus_feature_win: parseInt(item.second_bonus_feature_win),
             jackpot_win: parseInt(item.jackpot_win),
             credit_after:
               parseInt(item.credit_before) +
@@ -349,6 +399,7 @@ export const GameHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
+            pagination={true}
           />
         </div>
       </div>
