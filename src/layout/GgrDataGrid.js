@@ -204,6 +204,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
     );
     const totalJp = ggrData.reduce((sum, item) => sum + item.jackpotPayout, 0);
 
+    //This is the pinned bottom row for totals
     setTotalData({
       amount: parseFloat(totalAmount.toFixed(2)),
       payout: parseFloat(totalPayout.toFixed(2)),
@@ -211,18 +212,6 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       jackpot_contribution: parseFloat(totalJc.toFixed(2)),
       jackpotPayout: parseFloat(totalJp.toFixed(2)),
     });
-
-    // const ggrDataWithTotal = [
-    //   ...ggrData,
-    //   //bottom row for total
-    //   {
-    //     amount: parseFloat(totalAmount.toFixed(2)),
-    //     payout: parseFloat(totalPayout.toFixed(2)),
-    //     ggr: parseFloat(totalGgr.toFixed(2)),
-    //     jackpot_contribution: parseFloat(totalJc.toFixed(2)),
-    //     jackpotPayout: parseFloat(totalJp.toFixed(2)),
-    //   },
-    // ];
 
     setRowData(ggrData);
     setDataCount(result.length);
