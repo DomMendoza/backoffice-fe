@@ -68,6 +68,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
       maxWidth: 100,
     },
     {
@@ -76,6 +77,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "game_type",
@@ -83,6 +85,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "game_id",
@@ -90,6 +93,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "game_session",
@@ -97,6 +101,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "bet_ref_id",
@@ -104,6 +109,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "bet_data",
@@ -111,6 +117,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "amount",
@@ -118,6 +125,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "created_date",
@@ -126,6 +134,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filterParams: dateFilterParams,
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "updated_date",
@@ -134,6 +143,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filterParams: dateFilterParams,
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "jackpot_contribution",
@@ -141,6 +151,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "winning_amount",
@@ -148,6 +159,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "jackpot_payout",
@@ -155,6 +167,7 @@ export const BetHistoryDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agNumberColumnFilter",
       cellStyle: { fontFamily: "Poppins" },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
   ]);
   const defaultColDef = useMemo(

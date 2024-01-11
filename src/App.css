@@ -5,8 +5,16 @@
     font-weight: 600;
     font-size: 1.1rem;
   }
+.ag-header-cell-label {
+  justify-content: center;
+}
 .header-style {
     font-family: 'Poppins';
     font-weight: 600;
-    /* font-size: .8rem; */
+    justify-content: center;
 }
+.cell-style {
+  font-family: 'Poppins';
+  text-align: center;
+}
+

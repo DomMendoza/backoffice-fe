@@ -54,12 +54,17 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filterParams: dateFilterParams,
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
       cellRenderer: (params) => {
         const cellValue = params.value;
         if (params.node.rowPinned) {
@@ -75,12 +80,17 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "amount",
@@ -88,36 +98,51 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "payout",
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "netWin",
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "jackpot_contribution",
@@ -125,12 +150,17 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "jackpotPayout",
@@ -138,12 +168,17 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
         if (params.node.rowPinned) {
-          return { fontWeight: "600" };
+          return {
+            fontWeight: "600",
+            backgroundColor: "gainsboro",
+            textAlign: "center",
+          };
         } else {
           return null;
         }
       },
       headerClass: "header-style",
+      cellClass: "cell-style",
     },
     {
       field: "ggr",
@@ -153,22 +188,38 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
 
         if (ggrValue < 0) {
           if (params.node.rowPinned) {
-            return { fontFamily: "Poppins", fontWeight: "600" };
+            return {
+              fontFamily: "Poppins",
+              fontWeight: "600",
+              backgroundColor: "gainsboro",
+              textAlign: "center",
+            };
           }
           return { fontFamily: "Poppins", color: "red" };
         } else if (ggrValue === 0) {
           if (params.node.rowPinned) {
-            return { fontFamily: "Poppins", fontWeight: "600" };
+            return {
+              fontFamily: "Poppins",
+              fontWeight: "600",
+              backgroundColor: "gainsboro",
+              textAlign: "center",
+            };
           }
           return { fontFamily: "Poppins" };
         } else {
           if (params.node.rowPinned) {
-            return { fontFamily: "Poppins", fontWeight: "600" };
+            return {
+              fontFamily: "Poppins",
+              fontWeight: "600",
+              backgroundColor: "gainsboro",
+              textAlign: "center",
+            };
           }
           return { fontFamily: "Poppins", color: "green" };
         }
       },
       headerClass: "header-style-bold",
+      cellClass: "cell-style",
     },
   ]);
   const defaultColDef = useMemo(
