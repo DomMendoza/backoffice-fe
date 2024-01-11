@@ -108,29 +108,16 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       headerClass: "header-style",
     },
     {
-      field: "ggr",
+      field: "netWin",
       filter: "agTextColumnFilter",
       cellStyle: (params) => {
-        const ggrValue = params.value;
-
-        if (ggrValue < 0) {
-          if (params.node.rowPinned) {
-            return { fontFamily: "Poppins", fontWeight: "600" };
-          }
-          return { fontFamily: "Poppins", color: "red" };
-        } else if (ggrValue === 0) {
-          if (params.node.rowPinned) {
-            return { fontFamily: "Poppins", fontWeight: "600" };
-          }
-          return { fontFamily: "Poppins" };
+        if (params.node.rowPinned) {
+          return { fontWeight: "600" };
         } else {
-          if (params.node.rowPinned) {
-            return { fontFamily: "Poppins", fontWeight: "600" };
-          }
-          return { fontFamily: "Poppins", color: "green" };
+          return null;
         }
       },
-      headerClass: "header-style-bold",
+      headerClass: "header-style",
     },
     {
       field: "jackpot_contribution",
@@ -157,6 +144,31 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
         }
       },
       headerClass: "header-style",
+    },
+    {
+      field: "ggr",
+      filter: "agTextColumnFilter",
+      cellStyle: (params) => {
+        const ggrValue = params.value;
+
+        if (ggrValue < 0) {
+          if (params.node.rowPinned) {
+            return { fontFamily: "Poppins", fontWeight: "600" };
+          }
+          return { fontFamily: "Poppins", color: "red" };
+        } else if (ggrValue === 0) {
+          if (params.node.rowPinned) {
+            return { fontFamily: "Poppins", fontWeight: "600" };
+          }
+          return { fontFamily: "Poppins" };
+        } else {
+          if (params.node.rowPinned) {
+            return { fontFamily: "Poppins", fontWeight: "600" };
+          }
+          return { fontFamily: "Poppins", color: "green" };
+        }
+      },
+      headerClass: "header-style-bold",
     },
   ]);
   const defaultColDef = useMemo(
@@ -192,7 +204,19 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
   const fetchData = async () => {
     const result = await getGGR(start, end); //real and raw data to be used in computations.
     console.log("Raw GGR: ", result);
-    const ggrData = roundTwoDecimalPlaces(result); //formatted version of 'result' to be displayed in front-end.
+
+    // Modify GGR computation based on requirement and add netWin computation.
+    const rowData = result.map((item) => ({
+      ...item,
+      ggr: parseFloat(
+        item.amount -
+          item.jackpot_contribution -
+          (item.payout - item.jackpotPayout)
+      ),
+      netWin: parseFloat(item.amount - item.payout),
+    }));
+
+    const ggrData = roundTwoDecimalPlaces(rowData); //formatted version of the data to be displayed in front-end.
 
     // Calculate the sum
     const totalAmount = ggrData.reduce((sum, item) => sum + item.amount, 0);
@@ -203,6 +227,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       0
     );
     const totalJp = ggrData.reduce((sum, item) => sum + item.jackpotPayout, 0);
+    const totalNetWin = ggrData.reduce((sum, item) => sum + item.netWin, 0);
 
     //This is the pinned bottom row for totals
     setTotalData({
@@ -211,6 +236,7 @@ export const GgrDataGrid = ({ gridRef, isRefresh, setDataCount }) => {
       ggr: parseFloat(totalGgr.toFixed(2)),
       jackpot_contribution: parseFloat(totalJc.toFixed(2)),
       jackpotPayout: parseFloat(totalJp.toFixed(2)),
+      netWin: parseFloat(totalNetWin.toFixed(2)),
     });
 
     setRowData(ggrData);
