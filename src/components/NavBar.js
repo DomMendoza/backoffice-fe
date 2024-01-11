@@ -65,7 +65,7 @@ function NavBar() {
               variant="h6"
               noWrap
               component="a"
-              href="/dashboard"
+              href="/reports/ggr"
               sx={{
                 // mr: 2,
                 display: { xs: "none", md: "flex" },
