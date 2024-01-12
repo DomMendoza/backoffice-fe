@@ -30,7 +30,6 @@ const reportsLink = ["/reports/ggr", "/reports/history", "/reports/game"];
 
 function NavBar() {
   const navigate = useNavigate();
-  // const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorSettings, setAnchorSettings] = React.useState(null);
   const [anchorReports, setAnchorReports] = React.useState(null);
 
@@ -89,18 +88,6 @@ function NavBar() {
             >
               {pages.map((page, index) => (
                 <div key={index} className="text-xl flex">
-                  {/* index === 0 ? (
-                    <NavLink
-                      className={`${
-                        window.location.pathname.startsWith("/dashboard")
-                          ? "bg-gray-700"
-                          : ""
-                      } px-2 py-1 rounded-md transition ease-in-out`}
-                      to="/dashboard"
-                    >
-                      <p>{page}</p>
-                    </NavLink>
-                  ) */}
                   {index === 0 ? (
                     <Box
                       sx={{

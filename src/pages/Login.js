@@ -33,8 +33,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function Login() {
@@ -48,7 +46,6 @@ export default function Login() {
 
     if (username === "admin" && password === "admin") {
       Cookies.set("token", "admin", { expires: 1 });
-      // navigate("/dashboard");
       navigate("/reports/ggr");
     } else {
       alert("Invalid Credentials");
@@ -77,9 +74,6 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar> */}
           <Typography
             component="h1"
             variant="h5"
