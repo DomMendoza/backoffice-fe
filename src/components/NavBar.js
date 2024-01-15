@@ -138,9 +138,9 @@ function NavBar() {
                           >
                             <NavLink
                               to={reportsLink[index]}
-                              className="text-xl"
+                              className="text-xl w-full"
                             >
-                              <div className="flex gap-4 font-['Poppins'] ">
+                              <div className="flex gap-4 font-['Poppins'] w-full">
                                 {/* <LogoutIcon /> */}
                                 {reportsIcon[index]}
                                 <div className="text-base flex flex-col justify-start items-start font-semibold">
