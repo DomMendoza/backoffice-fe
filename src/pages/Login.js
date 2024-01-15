@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { postLogin } from "../services/postLogin";
 
 function Copyright(props) {
   return (
@@ -38,13 +39,15 @@ const defaultTheme = createTheme();
 export default function Login() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const username = data.get("username");
     const password = data.get("password");
 
-    if (username === "admin" && password === "admin") {
+    const result = await postLogin(username, password);
+
+    if (result.admin) {
       Cookies.set("token", "admin", { expires: 1 });
       navigate("/reports/ggr");
     } else {
@@ -144,6 +147,7 @@ export default function Login() {
             >
               Sign In
             </Button>
+
             <Grid container>
               <Grid item xs>
                 <Link
