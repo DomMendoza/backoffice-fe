@@ -10,13 +10,14 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Cookies from "js-cookie";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ScheduleIcon from "@mui/icons-material/Schedule";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HistoryIcon from "@mui/icons-material/History";
 import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Link as NavLink, Outlet, useNavigate } from "react-router-dom";
+import RecentsTab from "./RecentsTab";
 
 const pages = ["Reports"];
 const settings = ["Logout"];
@@ -31,6 +32,7 @@ const reportsLink = ["/reports/ggr", "/reports/history", "/reports/game"];
 function NavBar() {
   const navigate = useNavigate();
   const [anchorSettings, setAnchorSettings] = React.useState(null);
+  const [anchorRecents, setAnchorRecents] = React.useState(null);
   const [anchorReports, setAnchorReports] = React.useState(null);
 
   //Settings
@@ -39,6 +41,14 @@ function NavBar() {
   };
   const handleCloseUserMenu = () => {
     setAnchorSettings(null);
+  };
+
+  //Recent Activities
+  const handleOpenRecentsMenu = (event) => {
+    setAnchorRecents(event.currentTarget);
+  };
+  const handleCloseRecentsMenu = () => {
+    setAnchorRecents(null);
   };
 
   //Reports
@@ -159,40 +169,91 @@ function NavBar() {
                 </div>
               ))}
             </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <AccountCircleIcon
-                    style={{ fontSize: "2rem", color: "white" }}
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorSettings}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+            <div className="flex justify-center items-center gap-5">
+              <Box
+                sx={{
+                  flexGrow: 0,
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorSettings)}
-                onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <div className="flex gap-2" onClick={() => handleLogout()}>
-                      <LogoutIcon />
-                      {setting}
+                <Tooltip title="Recent Activity">
+                  <IconButton onClick={handleOpenRecentsMenu} sx={{ p: 0 }}>
+                    <ScheduleIcon
+                      style={{
+                        fontSize: "2rem",
+                        color: "white",
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorRecents}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorRecents)}
+                  onClose={handleCloseRecentsMenu}
+                >
+                  <div
+                    className="flex flex-col gap-2  px-4"
+                    style={{ minWidth: "500px" }}
+                  >
+                    <div className="">
+                      <p className="text-xl font-bold font-[Poppins]">
+                        Recent Activities
+                      </p>
                     </div>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                    <div className="">
+                      <RecentsTab />
+                    </div>
+                  </div>
+                </Menu>
+              </Box>
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Profile">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <AccountCircleIcon
+                      style={{ fontSize: "2rem", color: "white" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorSettings}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorSettings)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <div
+                        className="flex gap-2"
+                        onClick={() => handleLogout()}
+                      >
+                        <LogoutIcon />
+                        {setting}
+                      </div>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            </div>
           </Toolbar>
         </div>
       </div>
