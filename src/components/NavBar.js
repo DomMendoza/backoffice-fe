@@ -351,17 +351,38 @@ function NavBar() {
                   open={Boolean(anchorSettings)}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <div
-                        className="flex gap-2"
-                        onClick={() => handleLogout()}
-                      >
-                        <LogoutIcon />
-                        {setting}
+                  <div className="flex flex-col gap-4">
+                    <div className="px-4 flex flex-col gap-1">
+                      <p className="font-[Poppins] text-sm font-semibold">
+                        Logged in as
+                      </p>
+                      <div>
+                        <p className="text-xl font-bold font-[Poppins]">
+                          {localStorage.getItem("username")}
+                        </p>
+                        <p className="font-[Poppins] text-xs">
+                          {localStorage.getItem("user_id") === "1"
+                            ? "Admin"
+                            : localStorage.getItem("user_id") === "2"
+                            ? "PAGCOR"
+                            : "Developer"}
+                        </p>
                       </div>
-                    </MenuItem>
-                  ))}
+                    </div>
+                    <div className="">
+                      {settings.map((setting) => (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                          <div
+                            className="flex gap-2"
+                            onClick={() => handleLogout()}
+                          >
+                            <LogoutIcon />
+                            {setting}
+                          </div>
+                        </MenuItem>
+                      ))}
+                    </div>
+                  </div>
                 </Menu>
               </Box>
             </div>
