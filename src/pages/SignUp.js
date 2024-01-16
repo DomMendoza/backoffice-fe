@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { toast } from "react-toastify";
@@ -22,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { postLogin } from "../services/postLogin";
 import { postAuditLog } from "../services/postAuditLog";
 import { postSignUp } from "../services/postSignUp";
+import BreadCrumbs from "../components/BreadCrumbs";
 
 function Copyright(props) {
   return (
@@ -71,61 +73,36 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          minHeight: "100vh",
-          justifyContent: "center",
-        }}
-      >
+    <div className="main-container h-full flex justify-center">
+      <div className="items-container w-[95%] my-8 flex flex-col justify-start items-start gap-4 border-2 ">
+        <div className="breadcrumb-container flex flex-col gap-4">
+          <BreadCrumbs route="Account" pathName="Manage Accounts" />
+          <div className="flex flex-col">
+            <p className="capitalize text-3xl font-semibold font-['Poppins']">
+              Create an account
+            </p>
+            <p className="capitalize text-base font-['Poppins'] text-gray-600">
+              Manage accounts here.
+            </p>
+          </div>
+        </div>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: "600",
-              fontSize: "2rem",
-            }}
-          >
-            Backoffice Signup
-          </Typography>
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: "300",
-              fontSize: "1rem",
-            }}
-          >
-            Create your account!
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSignUp}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={handleSignUp} noValidate>
             <TextField
               margin="normal"
               required
               fullWidth
               inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
-              InputLabelProps={{ style: { fontFamily: "Poppins, sans serif" } }}
+              InputLabelProps={{
+                style: { fontFamily: "Poppins, sans serif" },
+              }}
               id="username"
               label="Username"
               name="username"
@@ -137,7 +114,9 @@ export default function SignUp() {
               required
               fullWidth
               inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
-              InputLabelProps={{ style: { fontFamily: "Poppins, sans serif" } }}
+              InputLabelProps={{
+                style: { fontFamily: "Poppins, sans serif" },
+              }}
               name="password"
               label="Password"
               type="password"
@@ -165,26 +144,18 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                padding: 1.5,
+                fontSize: "1.1rem",
+              }}
             >
-              Sign Up
+              Register
             </Button>
-
-            {/* <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link
-                  href="#"
-                  variant="body2"
-                  sx={{ fontFamily: "Poppins, sans serif" }}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 4, mb: 4, fontFamily: "Poppins, sans serif" }} />
-      </Container>
-    </ThemeProvider>
+      </div>
+    </div>
   );
 }

@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import Dashboard from "./Dashboard";
+import SignUp from "./SignUp";
 import GrossGamingRevenue from "./GrossGamingRevenue";
 import BetHistory from "./BetHistory";
 import GameHistory from "./GameHistory";
@@ -19,6 +20,7 @@ function ProtectedRoute() {
         <Route path="/reports/ggr" element={<GrossGamingRevenue />} />
         <Route path="/reports/history" element={<BetHistory />} />
         <Route path="/reports/game" element={<GameHistory />} />
+        <Route path="/accounts/signup" element={<SignUp />} />
       </Route>
     </Routes>
   );

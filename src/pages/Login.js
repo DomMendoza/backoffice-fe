@@ -160,7 +160,7 @@ export default function Login() {
               Sign In
             </Button>
 
-            <Grid container justifyContent="flex-end">
+            {/* <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
                   href="/signup"
@@ -170,7 +170,7 @@ export default function Login() {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4, fontFamily: "Poppins, sans serif" }} />

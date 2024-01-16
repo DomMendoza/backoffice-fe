@@ -8,7 +8,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import ProtectedRoute from "./pages/ProtectedRoute";
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
       <ToastContainer position="top-center" />
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/*" element={<ProtectedRoute />} />
       </Routes>
     </BrowserRouter>
