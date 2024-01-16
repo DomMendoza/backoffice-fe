@@ -75,86 +75,100 @@ export default function SignUp() {
   return (
     <div className="main-container h-full flex justify-center">
       <div className="items-container w-[95%] my-8 flex flex-col justify-start items-start gap-4 ">
-        <div className="breadcrumb-container flex flex-col gap-4">
+        <div className="breadcrumb-container flex flex-col gap-4 ">
           <BreadCrumbs route="Account" pathName="Manage Accounts" />
-          <div className="flex flex-col">
-            <p className="capitalize text-3xl font-semibold font-['Poppins']">
-              Create an account
-            </p>
-            <p className="capitalize text-base font-['Poppins'] text-gray-600">
-              Manage accounts here.
-            </p>
-          </div>
+          {localStorage.getItem("user_id") === "1" ||
+          localStorage.getItem("user_id") === "2" ? (
+            <div className="flex flex-col">
+              <p className="capitalize text-3xl font-semibold font-['Poppins']">
+                Create an account
+              </p>
+              <p className="capitalize text-base font-['Poppins'] text-gray-600">
+                Manage accounts here.
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              <p className="text-3xl font-semibold font-['Poppins']">
+                Access to this feature is restricted <br />
+                due to insufficient permissions.
+              </p>
+            </div>
+          )}
         </div>
-        <CssBaseline />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box component="form" onSubmit={handleSignUp} noValidate>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
-              InputLabelProps={{
-                style: { fontFamily: "Poppins, sans serif" },
-              }}
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
-              InputLabelProps={{
-                style: { fontFamily: "Poppins, sans serif" },
-              }}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Box sx={{ maxWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Class</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={userClass}
-                  label="userClass"
-                  onChange={handleChangeUserClass}
-                >
-                  <MenuItem value={1}>Admin</MenuItem>
-                  <MenuItem value={2}>PAGCOR</MenuItem>
-                  <MenuItem value={3}>Developer</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
+        {localStorage.getItem("user_id") === "1" ||
+        localStorage.getItem("user_id") === "2" ? (
+          <div className="">
+            <CssBaseline />
+            <Box
               sx={{
-                mt: 3,
-                mb: 2,
-                padding: 1.5,
-                fontSize: "1.1rem",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              Register
-            </Button>
-          </Box>
-        </Box>
+              <Box component="form" onSubmit={handleSignUp} noValidate>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
+                  InputLabelProps={{
+                    style: { fontFamily: "Poppins, sans serif" },
+                  }}
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  inputProps={{ style: { fontFamily: "Poppins, sans serif" } }}
+                  InputLabelProps={{
+                    style: { fontFamily: "Poppins, sans serif" },
+                  }}
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <Box sx={{ maxWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={userClass}
+                      label="userClass"
+                      onChange={handleChangeUserClass}
+                    >
+                      <MenuItem value={1}>Admin</MenuItem>
+                      <MenuItem value={2}>PAGCOR</MenuItem>
+                      <MenuItem value={3}>Developer</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    padding: 1.5,
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  Register
+                </Button>
+              </Box>
+            </Box>
+          </div>
+        ) : null}
       </div>
     </div>
   );
