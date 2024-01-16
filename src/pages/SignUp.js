@@ -57,7 +57,7 @@ export default function SignUp() {
     const username = data.get("username");
     const password = data.get("password");
 
-    if (username && password) {
+    if (username && password && userClass) {
       const result = await postSignUp(username, password, userClass);
       console.log(result);
 
