@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "../services/postLogin";
+import { postAuditLog } from "../services/postAuditLog";
 
 function Copyright(props) {
   return (
@@ -46,8 +47,16 @@ export default function Login() {
     const password = data.get("password");
 
     const result = await postLogin(username, password);
+    localStorage.setItem("username", result.admin.username);
+    localStorage.setItem("user_id", result.admin.user_id);
 
     if (result.admin) {
+      await postAuditLog(
+        result.admin.user_id,
+        result.admin.username,
+        "logged in",
+        "Login"
+      );
       Cookies.set("token", "admin", { expires: 1 });
       navigate("/reports/ggr");
     } else {

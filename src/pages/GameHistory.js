@@ -4,8 +4,11 @@ import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 import { GameHistoryDataGrid } from "../layout/GameHistoryDataGrid";
+import { postAuditLog } from "../services/postAuditLog";
 
 function GameHistory() {
+  const username = localStorage.getItem("username");
+  const user_id = localStorage.getItem("user_id");
   const gridRef = useRef();
   const [isRefresh, setIsRefresh] = useState(false);
   const [rotateClass, setRotateClass] = useState("");
@@ -18,10 +21,36 @@ function GameHistory() {
     gridRef.current.api.exportDataAsCsv(params);
   }, []);
 
+  const saveExportActivity = async () => {
+    const result = await postAuditLog(
+      user_id,
+      username,
+      "exported the Game History data.",
+      "Export"
+    );
+    console.log(result);
+  };
+
   useEffect(() => {
     // Update rotateClass based on isRefresh changes
     setRotateClass(isRefresh ? "rotate-180" : "");
   }, [isRefresh]);
+
+  useEffect(() => {
+    const visitLocalStorage = localStorage.getItem("visit");
+    const handleAuditVisit = async () => {
+      if (visitLocalStorage !== "GameHistory") {
+        await postAuditLog(
+          user_id,
+          username,
+          "viewed the Game History data.",
+          "Visit"
+        );
+        localStorage.setItem("visit", "GameHistory");
+      }
+    };
+    handleAuditVisit();
+  }, []);
 
   return (
     <div className="main-container h-full flex justify-center">
@@ -65,7 +94,10 @@ function GameHistory() {
                 padding: "8px 12px",
                 borderRadius: "4px",
               }}
-              onClick={onBtnExport}
+              onClick={() => {
+                onBtnExport();
+                saveExportActivity();
+              }}
             >
               <ArticleIcon />
               <p className="text-base">Export</p>

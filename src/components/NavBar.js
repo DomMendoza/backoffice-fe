@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,6 +17,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HistoryIcon from "@mui/icons-material/History";
 import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import { Link as NavLink, Outlet, useNavigate } from "react-router-dom";
 import RecentsTab from "./RecentsTab";
 
@@ -31,6 +33,10 @@ const reportsLink = ["/reports/ggr", "/reports/history", "/reports/game"];
 
 function NavBar() {
   const navigate = useNavigate();
+
+  const [isRefresh, setIsRefresh] = useState(false);
+  const [rotateClass, setRotateClass] = useState("");
+
   const [anchorSettings, setAnchorSettings] = React.useState(null);
   const [anchorRecents, setAnchorRecents] = React.useState(null);
   const [anchorReports, setAnchorReports] = React.useState(null);
@@ -61,8 +67,14 @@ function NavBar() {
 
   const handleLogout = () => {
     Cookies.set("token", "", { expires: new Date(0) });
+    localStorage.clear();
     navigate("/login");
   };
+
+  useEffect(() => {
+    // Update rotateClass based on isRefresh changes
+    setRotateClass(isRefresh ? "rotate-180" : "");
+  }, [isRefresh]);
 
   return (
     <div className="h-screen flex flex-col">
@@ -205,13 +217,24 @@ function NavBar() {
                     className="flex flex-col gap-2  px-4"
                     style={{ minWidth: "500px" }}
                   >
-                    <div className="">
+                    <div className="flex justify-between items-center">
                       <p className="text-xl font-bold font-[Poppins]">
                         Recent Activities
                       </p>
+                      <div
+                        onClick={() => setIsRefresh(!isRefresh)}
+                        className={`transition-transform duration-300 ease-in-out rounded-lg cursor-pointer ${rotateClass}`}
+                      >
+                        <CachedOutlinedIcon
+                          style={{
+                            borderRadius: 100,
+                            fontSize: "2rem",
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className="">
-                      <RecentsTab />
+                      <RecentsTab isRefresh={isRefresh} />
                     </div>
                   </div>
                 </Menu>

@@ -5,8 +5,11 @@ import BreadCrumbs from "../components/BreadCrumbs";
 import CachedOutlinedIcon from "@mui/icons-material/CachedOutlined";
 import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
+import { postAuditLog } from "../services/postAuditLog";
 
 function GrossGamingRevenue() {
+  const username = localStorage.getItem("username");
+  const user_id = localStorage.getItem("user_id");
   const gridRef = useRef();
   const [isRefresh, setIsRefresh] = useState(false);
   const [rotateClass, setRotateClass] = useState("");
@@ -19,10 +22,32 @@ function GrossGamingRevenue() {
     gridRef.current.api.exportDataAsCsv(params);
   }, []);
 
+  const saveExportActivity = async () => {
+    const result = await postAuditLog(
+      user_id,
+      username,
+      "exported the GGR data.",
+      "Export"
+    );
+    // console.log(result);
+  };
+
   useEffect(() => {
     // Update rotateClass based on isRefresh changes
     setRotateClass(isRefresh ? "rotate-180" : "");
   }, [isRefresh]);
+
+  useEffect(() => {
+    const visitLocalStorage = localStorage.getItem("visit");
+
+    const handleAuditVisit = async () => {
+      if (visitLocalStorage !== "GGR") {
+        await postAuditLog(user_id, username, "viewed the GGR data.", "Visit");
+        localStorage.setItem("visit", "GGR");
+      }
+    };
+    handleAuditVisit();
+  }, []);
 
   return (
     <div className="main-container h-full flex justify-center">
@@ -66,7 +91,10 @@ function GrossGamingRevenue() {
                 padding: "8px 12px",
                 borderRadius: "4px",
               }}
-              onClick={onBtnExport}
+              onClick={() => {
+                onBtnExport();
+                saveExportActivity();
+              }}
             >
               <ArticleIcon />
               <p className="text-base">Export</p>
