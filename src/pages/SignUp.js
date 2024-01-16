@@ -8,15 +8,20 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { toast } from "react-toastify";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "../services/postLogin";
 import { postAuditLog } from "../services/postAuditLog";
-import { toast } from "react-toastify";
+import { postSignUp } from "../services/postSignUp";
 
 function Copyright(props) {
   return (
@@ -38,32 +43,30 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function Login() {
+export default function SignUp() {
   const navigate = useNavigate();
+  const [userClass, setUserClass] = React.useState("");
 
-  const handleSubmit = async (event) => {
+  const handleChangeUserClass = (event) => {
+    setUserClass(event.target.value);
+  };
+
+  const handleSignUp = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const username = data.get("username");
     const password = data.get("password");
 
-    const result = await postLogin(username, password);
+    if (username && password) {
+      const result = await postSignUp(username, password, userClass);
+      console.log(result);
 
-    if (result.admin) {
-      localStorage.setItem("username", result.admin.username);
-      localStorage.setItem("user_id", result.admin.user_id);
-
-      await postAuditLog(
-        result.admin.user_id,
-        result.admin.username,
-        "logged in",
-        "Login"
-      );
-      Cookies.set("token", "admin", { expires: 1 });
-      navigate("/reports/ggr");
-      toast.success("Successfully logged in.");
+      if (result.message) {
+        navigate("/login");
+        toast.success("Account successfully Created");
+      }
     } else {
-      toast.error("Invalid Credentials.");
+      toast.error("All fields are required.");
     }
   };
 
@@ -98,7 +101,7 @@ export default function Login() {
               fontSize: "2rem",
             }}
           >
-            Backoffice Login
+            Backoffice Signup
           </Typography>
           <Typography
             component="h1"
@@ -109,11 +112,11 @@ export default function Login() {
               fontSize: "1rem",
             }}
           >
-            Welcome!
+            Create your account!
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleSignUp}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -141,39 +144,46 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label={
-                <Typography
-                  sx={{ fontSize: 16, fontFamily: "Poppins, sans serif" }}
+            <Box sx={{ maxWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={userClass}
+                  label="userClass"
+                  onChange={handleChangeUserClass}
                 >
-                  Remember Me
-                </Typography>
-              }
-            /> */}
+                  <MenuItem value={1}>Admin</MenuItem>
+                  <MenuItem value={2}>PAGCOR</MenuItem>
+                  <MenuItem value={3}>Developer</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
 
-            <Grid container justifyContent="flex-end">
+            {/* <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  href="/signup"
+                  href="#"
                   variant="body2"
                   sx={{ fontFamily: "Poppins, sans serif" }}
                 >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4, fontFamily: "Poppins, sans serif" }} />
+        <Copyright sx={{ mt: 4, mb: 4, fontFamily: "Poppins, sans serif" }} />
       </Container>
     </ThemeProvider>
   );
