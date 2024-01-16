@@ -74,7 +74,7 @@ export default function SignUp() {
 
   return (
     <div className="main-container h-full flex justify-center">
-      <div className="items-container w-[95%] my-8 flex flex-col justify-start items-start gap-4 border-2 ">
+      <div className="items-container w-[95%] my-8 flex flex-col justify-start items-start gap-4 ">
         <div className="breadcrumb-container flex flex-col gap-4">
           <BreadCrumbs route="Account" pathName="Manage Accounts" />
           <div className="flex flex-col">

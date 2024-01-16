@@ -89,6 +89,10 @@ function NavBar() {
     setRotateClass(isRefresh ? "rotate-180" : "");
   }, [isRefresh]);
 
+  // useEffect(() => {
+  //   console.log(localStorage.getItem("user_id"));
+  // }, []);
+
   return (
     <div className="h-screen flex flex-col">
       <div className="navbar-container bg-[#182c34] py-2 flex justify-center items-center">
@@ -262,63 +266,67 @@ function NavBar() {
               ))}
             </Box>
             <div className="flex justify-center items-center gap-5">
-              <Box
-                sx={{
-                  flexGrow: 0,
-                }}
-              >
-                <Tooltip title="Recent Activity">
-                  <IconButton onClick={handleOpenRecentsMenu} sx={{ p: 0 }}>
-                    <ScheduleIcon
-                      style={{
-                        fontSize: "2rem",
-                        color: "white",
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorRecents}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
+              {localStorage.getItem("user_id") === "1" ||
+              localStorage.getItem("user_id") === "2" ? (
+                <Box
+                  sx={{
+                    flexGrow: 0,
                   }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorRecents)}
-                  onClose={handleCloseRecentsMenu}
                 >
-                  <div
-                    className="flex flex-col gap-2  px-4"
-                    style={{ minWidth: "500px" }}
+                  <Tooltip title="Recent Activity">
+                    <IconButton onClick={handleOpenRecentsMenu} sx={{ p: 0 }}>
+                      <ScheduleIcon
+                        style={{
+                          fontSize: "2rem",
+                          color: "white",
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorRecents}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorRecents)}
+                    onClose={handleCloseRecentsMenu}
                   >
-                    <div className="flex justify-between items-center">
-                      <p className="text-xl font-bold font-[Poppins]">
-                        Recent Activities
-                      </p>
-                      <div
-                        onClick={() => setIsRefresh(!isRefresh)}
-                        className={`transition-transform duration-300 ease-in-out rounded-lg cursor-pointer ${rotateClass}`}
-                      >
-                        <CachedOutlinedIcon
-                          style={{
-                            borderRadius: 100,
-                            fontSize: "2rem",
-                          }}
-                        />
+                    <div
+                      className="flex flex-col gap-2  px-4"
+                      style={{ minWidth: "500px" }}
+                    >
+                      <div className="flex justify-between items-center">
+                        <p className="text-xl font-bold font-[Poppins]">
+                          Recent Activities
+                        </p>
+                        <div
+                          onClick={() => setIsRefresh(!isRefresh)}
+                          className={`transition-transform duration-300 ease-in-out rounded-lg cursor-pointer ${rotateClass}`}
+                        >
+                          <CachedOutlinedIcon
+                            style={{
+                              borderRadius: 100,
+                              fontSize: "2rem",
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="">
+                        <RecentsTab isRefresh={isRefresh} />
                       </div>
                     </div>
-                    <div className="">
-                      <RecentsTab isRefresh={isRefresh} />
-                    </div>
-                  </div>
-                </Menu>
-              </Box>
+                  </Menu>
+                </Box>
+              ) : null}
+
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Profile">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
